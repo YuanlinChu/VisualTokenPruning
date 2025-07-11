@@ -1,0 +1,234 @@
+# Python 编译文件和缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 分发 / 打包
+*.egg-info/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  通常这些文件是由 python 脚本从模板生成的
+#  在运行 PyInstaller 之前。它们也可以由用户生成
+#  如果我们在没有 --onefile 的情况下使用 PyInstaller，我们会得到一个分发目录。
+*.manifest
+*.spec
+
+# 单元测试 / 覆盖率报告
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   对于在项目中使用 pyenv 的库，请包含版本文件
+.python-version
+
+# pipenv
+#   根据官方建议，pipenv 锁文件是通用的，应该包含在版本控制中。
+#   但是，如果您有在多个平台上运行的机器，
+#   而且您只针对一个特定的平台进行开发，
+#   您可能需要排除锁文件。
+#Pipfile.lock
+
+# poetry
+#   类似于 Pipfile.lock，通常建议包含 poetry.lock 在版本控制中。
+#   这对于确保一致的安装是特别推荐的，跨平台。
+#poetry.lock
+
+# pdm
+#   类似于 Pipfile.lock，通常建议包含 pdm.lock 在版本控制中。
+#pdm.lock
+#   pdm 在 .pdm-python 中存储项目范围的配置
+.pdm-python
+
+# PEP 582; 被各种工具和编辑器使用
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath 解析的文件
+*.sage.py
+
+# 环境
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder 项目设置
+.spyderproject
+.spyproject
+
+# Rope 项目设置
+.ropeproject
+
+# mkdocs 文档
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre 类型检查器
+.pyre/
+
+# pytype 静态类型分析器
+.pytype/
+
+# Cython 调试符号
+cython_debug/
+
+# PyCharm
+#  JetBrains 特定模板在 https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore 中维护
+#  并且可以添加到全局 gitignore 或合并到这个文件中。有关更多信息，请参见：
+#  https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files#global-gitignore
+.idea/
+
+# 项目特定的忽略规则
+# ===================
+
+# 忽略 download 文件夹下的所有文件
+download/
+
+# 忽略所有 .egg-info 文件夹
+*.egg-info/
+
+# 忽略所有 __pycache__ 文件夹（在任何层级）
+**/__pycache__/
+
+# 机器学习 / AI 项目特定文件
+# ============================
+
+# 模型文件
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.tflite
+
+# 大型数据文件
+*.h5
+*.hdf5
+*.npz
+*.pkl
+*.pickle
+
+# 日志文件
+*.log
+logs/
+wandb/
+tensorboard_logs/
+
+# 检查点文件
+checkpoints/
+checkpoint_*/
+ckpt_*/
+
+# 临时文件和缓存
+tmp/
+temp/
+.cache/
+cache/
+
+# 数据文件夹（根据需要调整）
+data/
+datasets/
+
+# 实验结果
+results/
+outputs/
+experiments/
+
+# 配置文件中的敏感信息
+secrets.json
+.secrets
+config_private.py
+
+# IDE 和编辑器文件
+# ================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# 系统文件
+# ========
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
