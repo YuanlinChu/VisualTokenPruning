@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# 启动 PyramidDrop 推理服务的完整脚本
+# 启动推理服务的完整脚本
 # 按顺序启动：Controller -> Model Worker -> Gradio Web Server
 
-echo "Starting PyramidDrop inference service..."
+echo "Starting VisualTokenPruning inference service..."
 
 # 检查是否在正确的环境中
 if ! command -v conda &> /dev/null; then

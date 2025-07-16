@@ -15,12 +15,12 @@ import torch
 import uvicorn
 from functools import partial
 
-from llava.constants import WORKER_HEART_BEAT_INTERVAL
-from llava.utils import (build_logger, server_error_msg,
+from tokenpruning.constants import WORKER_HEART_BEAT_INTERVAL
+from tokenpruning.utils import (build_logger, server_error_msg,
     pretty_print_semaphore)
-from llava.model.builder import load_pretrained_model
-from llava.mm_utils import process_images, load_image_from_base64, tokenizer_image_token
-from llava.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
+from tokenpruning.model.builder import load_pretrained_model
+from tokenpruning.mm_utils import process_images, load_image_from_base64, tokenizer_image_token
+from tokenpruning.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from transformers import TextIteratorStreamer
 from threading import Thread
 
@@ -46,7 +46,7 @@ class ModelWorker:
                  worker_id, no_register,
                  model_path, model_base, model_name,
                  load_8bit, load_4bit, device, use_flash_attn=False,
-                 pdrop_infer=False, layer_list=None, image_token_ratio_list=None):
+                 tpruning_infer=False, layer_list=None, image_token_ratio_list=None):
         self.controller_addr = controller_addr
         self.worker_addr = worker_addr
         self.worker_id = worker_id
@@ -64,11 +64,11 @@ class ModelWorker:
         self.device = device
         logger.info(f"Loading the model {self.model_name} on worker {worker_id} ...")
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(
-            model_path, model_base, self.model_name, pdrop_infer, load_8bit, load_4bit, device=self.device, use_flash_attn=use_flash_attn)
+            model_path, model_base, self.model_name, tpruning_infer, load_8bit, load_4bit, device=self.device, use_flash_attn=use_flash_attn)
         self.is_multimodal = 'llava' in self.model_name.lower()
 
-        # Setup PyramidDrop parameters if enabled
-        if pdrop_infer:
+        # Setup VisualTokenPruning parameters if enabled
+        if tpruning_infer:
             if layer_list is not None:
                 layer_list_parsed = eval(layer_list) if isinstance(layer_list, str) else layer_list
                 self.model.model.layer_list = layer_list_parsed
@@ -80,7 +80,7 @@ class ModelWorker:
                 self.model.model.image_token_ratio_list.insert(0, 1.0)
                 logger.info(f"Set image_token_ratio_list: {self.model.model.image_token_ratio_list}")
             
-            logger.info(f"PyramidDrop enabled with layer_list: {getattr(self.model.model, 'layer_list', None)}, image_token_ratio_list: {getattr(self.model.model, 'image_token_ratio_list', None)}")
+            logger.info(f"VisualTokenPruning enabled with layer_list: {getattr(self.model.model, 'layer_list', None)}, image_token_ratio_list: {getattr(self.model.model, 'image_token_ratio_list', None)}")
 
         if not no_register:
             self.register_to_controller()
@@ -284,7 +284,7 @@ if __name__ == "__main__":
     parser.add_argument("--load-8bit", action="store_true")
     parser.add_argument("--load-4bit", action="store_true")
     parser.add_argument("--use-flash-attn", action="store_true")
-    parser.add_argument("--pdrop-infer", action="store_true")
+    parser.add_argument("--tpruning-infer", action="store_true")
     parser.add_argument("--layer-list", type=str)
     parser.add_argument("--image-token-ratio-list", type=str)
     args = parser.parse_args()
@@ -294,7 +294,7 @@ if __name__ == "__main__":
         logger.warning("Multimodal mode is automatically detected with model name, please make sure `llava` is included in the model path.")
 
     if args.layer_list is not None:
-        args.pdrop_infer = True
+        args.tpruning_infer = True
 
     worker = ModelWorker(args.controller_address,
                          args.worker_address,
@@ -307,7 +307,7 @@ if __name__ == "__main__":
                          args.load_4bit,
                          args.device,
                          use_flash_attn=args.use_flash_attn,
-                         pdrop_infer=args.pdrop_infer,
+                         tpruning_infer=args.tpruning_infer,
                          layer_list=args.layer_list,
                          image_token_ratio_list=args.image_token_ratio_list)
     uvicorn.run(app, host=args.host, port=args.port, log_level="info")
