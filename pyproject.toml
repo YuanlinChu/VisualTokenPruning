@@ -26,10 +26,6 @@ dependencies = [
 train = ["deepspeed==0.12.6", "ninja", "wandb"]
 build = ["build", "twine"]
 
-[project.urls]
-"Homepage" = "https://llava-vl.github.io"
-"Bug Tracker" = "https://github.com/haotian-liu/LLaVA/issues"
-
 [tool.setuptools.packages.find]
 exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
 
